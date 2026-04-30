@@ -193,6 +193,35 @@ python3 epub_to_jsonl.py 紫微攻略.epub --chunk-size 800
 
 轉換完成後，直接用 `rag-to-skill` 建立 skill：在 Claude Code 輸入「把 xxx.jsonl 做成 skill」即可。
 
+## 進階：掃描版 PDF 的 Claude Code Skill（/pdf-ocr）
+
+`pdf_ocr_to_jsonl.py` 需要另外呼叫 Anthropic API（有費用）。若想用 **Claude Code CLI 本身的視覺能力** 做 OCR（消耗 session token，無額外費用），可安裝 `/pdf-ocr` skill：
+
+```bash
+cp -r pdf-ocr-skill ~/.claude/skills/pdf-ocr
+```
+
+安裝後在 Claude Code 輸入：
+
+```
+/pdf-ocr /path/to/掃描書.pdf
+```
+
+| 功能 | 說明 |
+|---|---|
+| 無額外費用 | 使用 Claude Code session token，非獨立 API 呼叫 |
+| 分批處理 | 每次 30 頁，避免 context 超限 |
+| 斷點續跑 | `/pdf-ocr <pdf> --resume` 從中斷點繼續 |
+| 章節偵測 | Claude 自動辨識章節標題頁，分 item |
+
+兩種方案比較：
+
+| | `pdf_ocr_to_jsonl.py` | `/pdf-ocr` skill |
+|---|---|---|
+| 費用 | 額外 API 費（≈ $3–10 / 書） | 無額外費用 |
+| 速度 | 快（平行可跑） | 較慢（逐頁讀取） |
+| 適合 | 批次處理、自動化 | 單書 OCR、省錢 |
+
 ## 授權
 
 MIT
