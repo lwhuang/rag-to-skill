@@ -39,11 +39,13 @@ description: |
 | 工具 | 支援格式 | 指令 |
 |---|---|---|
 | `any_to_jsonl.py` | **萬用**（PDF / EPUB / DOCX / PPTX / HTML...） | `python3 any_to_jsonl.py <file>` |
-| `pdf_to_jsonl.py` | PDF（TOC 分章 + header/footer 過濾） | `python3 pdf_to_jsonl.py <file.pdf>` |
+| `pdf_to_jsonl.py` | PDF（有文字層，TOC 分章） | `python3 pdf_to_jsonl.py <file.pdf>` |
 | `epub_to_jsonl.py` | EPUB（spine 順序 + 標題萃取） | `python3 epub_to_jsonl.py <file.epub>` |
+| `pdf_ocr_to_jsonl.py` | **掃描版 PDF**（無文字層，LLM Vision OCR） | `python3 pdf_ocr_to_jsonl.py <file.pdf>` |
 
 腳本位置：`~/.claude/skills/rag-to-skill/`（或同 repo 根目錄）。
-依賴：`pip install markitdown`（any）、`pip install pymupdf`（pdf）、`pip install ebooklib beautifulsoup4`（epub）。
+依賴：`pip install markitdown`（any）、`pip install pymupdf`（pdf/ocr）、`pip install anthropic`（ocr）、`pip install ebooklib beautifulsoup4`（epub）。
+OCR 額外需要：`export ANTHROPIC_API_KEY=sk-ant-...`；先執行 `--dry-run` 估算費用。
 
 ---
 

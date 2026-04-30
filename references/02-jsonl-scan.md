@@ -11,14 +11,22 @@
 pip install markitdown
 python3 ~/.claude/skills/rag-to-skill/any_to_jsonl.py <你的檔案>
 
-# PDF 專用（TOC 分章 + header/footer 過濾，品質更高）
+# PDF 專用（有文字層，TOC 分章 + header/footer 過濾）
 pip install pymupdf
 python3 ~/.claude/skills/rag-to-skill/pdf_to_jsonl.py <你的.pdf>
+
+# 掃描版 PDF（無文字層／圖像 PDF）— 使用 LLM Vision OCR
+pip install pymupdf anthropic
+export ANTHROPIC_API_KEY=sk-ant-...
+python3 ~/.claude/skills/rag-to-skill/pdf_ocr_to_jsonl.py <你的.pdf> --dry-run  # 先估費用
+python3 ~/.claude/skills/rag-to-skill/pdf_ocr_to_jsonl.py <你的.pdf>             # 正式執行
 
 # EPUB 專用（spine 順序，章節標題更準確）
 pip install ebooklib beautifulsoup4
 python3 ~/.claude/skills/rag-to-skill/epub_to_jsonl.py <你的.epub>
 ```
+
+> **判斷是否為掃描版 PDF**：先用 `pdf_to_jsonl.py` 試轉，若輸出的 JSONL 幾乎無文字（text 欄位為空或只有少量符號），即為掃描版，改用 `pdf_ocr_to_jsonl.py`。
 
 轉換完成後繼續以下步驟。
 
