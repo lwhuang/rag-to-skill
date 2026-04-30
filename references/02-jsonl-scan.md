@@ -2,6 +2,28 @@
 
 > 目標：在 5 分鐘內完全理解這份 JSONL 的 schema、有多少 entity、如何分組。
 
+## 前置：還沒有 JSONL？先轉換
+
+如果手上是 PDF / EPUB / DOCX / PPTX / HTML，用以下工具先轉成 JSONL：
+
+```bash
+# 萬用（推薦，任何格式）
+pip install markitdown
+python3 ~/.claude/skills/rag-to-skill/any_to_jsonl.py <你的檔案>
+
+# PDF 專用（TOC 分章 + header/footer 過濾，品質更高）
+pip install pymupdf
+python3 ~/.claude/skills/rag-to-skill/pdf_to_jsonl.py <你的.pdf>
+
+# EPUB 專用（spine 順序，章節標題更準確）
+pip install ebooklib beautifulsoup4
+python3 ~/.claude/skills/rag-to-skill/epub_to_jsonl.py <你的.epub>
+```
+
+轉換完成後繼續以下步驟。
+
+---
+
 ---
 
 ## 1.1 自動 Schema 發現

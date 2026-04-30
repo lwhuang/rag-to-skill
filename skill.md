@@ -34,7 +34,16 @@ description: |
 2. **目標輸出目錄**：放置新 skill 的路徑（可是任意 repo 或 `~/.claude/skills/`）
 3. **基本 CLI 環境**：`python3`、`bash`、`git`（可選）
 
-若無現成 JSONL，先用 epub/PDF → JSONL 轉換工具（不在本 skill 範圍），再回來。
+若無現成 JSONL，先用以下工具轉換，再回來：
+
+| 工具 | 支援格式 | 指令 |
+|---|---|---|
+| `any_to_jsonl.py` | **萬用**（PDF / EPUB / DOCX / PPTX / HTML...） | `python3 any_to_jsonl.py <file>` |
+| `pdf_to_jsonl.py` | PDF（TOC 分章 + header/footer 過濾） | `python3 pdf_to_jsonl.py <file.pdf>` |
+| `epub_to_jsonl.py` | EPUB（spine 順序 + 標題萃取） | `python3 epub_to_jsonl.py <file.epub>` |
+
+腳本位置：`~/.claude/skills/rag-to-skill/`（或同 repo 根目錄）。
+依賴：`pip install markitdown`（any）、`pip install pymupdf`（pdf）、`pip install ebooklib beautifulsoup4`（epub）。
 
 ---
 
