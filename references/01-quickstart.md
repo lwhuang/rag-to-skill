@@ -63,7 +63,7 @@ print('...(only first 10 shown)')
 SKILL_NAME="ebook-<skill-name>" # 必須以 ebook- 開頭，例如 ebook-acim-text
 BOOK_TITLE="<書名>"
 BOOK_AUTHOR="<作者>"
-SKILL_DIR="<target-path>/$SKILL_NAME"
+SKILL_DIR="$HOME/.agents/skills/$SKILL_NAME"
 mkdir -p "$SKILL_DIR/references"
 
 # 建立空的 ref 檔（依你的分組決定）

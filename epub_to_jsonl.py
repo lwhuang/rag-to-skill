@@ -44,11 +44,16 @@ def html_to_paragraphs(html_bytes):
     for tag in soup(["script", "style", "img", "nav", "head", "figure"]):
         tag.decompose()
 
+    # 優先嘗試尋找本文容器，若無則用 body 或整個 soup
+    container = soup.find("body") or soup
+
+    # 使用 \n 作為分隔符提取所有文字，能有效處理 <br/> 或 <div> 換行
+    raw_text = container.get_text(separator="\n", strip=True)
+    
+    # 切分行並過濾空白行
     blocks = []
-    for el in soup.find_all(["p", "li", "h1", "h2", "h3", "h4", "h5",
-                              "blockquote", "td", "th", "dd", "dt"]):
-        text = el.get_text(separator=" ", strip=True)
-        text = re.sub(r"\s+", " ", text).strip()
+    for line in raw_text.splitlines():
+        text = line.strip()
         if text:
             blocks.append(text)
 
