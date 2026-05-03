@@ -13,9 +13,9 @@ description: |
   - 使用者說「我要把 paidRag 裡面的書做成技能」
   適用對象：skill 開發者、知識庫維護者、想把書/文件轉成可執行 AI 知識的任何人。
   典型提問：
-  - 「把 紫微攻略.jsonl 做成 skill」
-  - 「幫我從 RAG 建一個 skill，100% 完成度」
-  - 「這本書的 JSONL 要怎麼變成可以給別人用的技能？」
+  - 「把 紫微攻略.jsonl 做成 skill，名稱為 ebook-ziwei」
+  - 「幫我從這本書建立一個 ebook- 開頭的 skill，100% 完成度」
+  - 「這本書的 JSONL 要怎麼變成可以給別人用的 ebook skill？」
 ---
 
 # RAG → Skill 建構工具

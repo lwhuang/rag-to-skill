@@ -42,10 +42,10 @@
 
 ```bash
 # 設定變數（請自行修改）
-SKILL_DIR="<你的 skill 目錄路徑>"
 BOOK_TITLE="<書名>"
 BOOK_AUTHOR="<作者>"
-SKILL_NAME="<skill-name>"
+SKILL_NAME="ebook-<skill-name>" # 強制要求：必須以 ebook- 開頭，以區分電子書與工具
+SKILL_DIR="<你的根路徑>/$SKILL_NAME"
 
 # 建立目錄
 mkdir -p "$SKILL_DIR/references"
@@ -70,7 +70,7 @@ done
 
 ```markdown
 ---
-name: <skill-name>
+name: ebook-<skill-name>
 description: |
   《<書名>》（<年份>）的 <主題> 解讀引擎。
   <一句話說明 skill 的核心功能與價值>

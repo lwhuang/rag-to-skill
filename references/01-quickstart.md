@@ -60,8 +60,10 @@ print('...(only first 10 shown)')
 ### Step 3：建立目錄骨架
 
 ```bash
-# 將 <skill-name> 換成你的 skill 名稱
-SKILL_DIR="<target-path>/<skill-name>"
+SKILL_NAME="ebook-<skill-name>" # 必須以 ebook- 開頭，例如 ebook-acim-text
+BOOK_TITLE="<書名>"
+BOOK_AUTHOR="<作者>"
+SKILL_DIR="<target-path>/$SKILL_NAME"
 mkdir -p "$SKILL_DIR/references"
 
 # 建立空的 ref 檔（依你的分組決定）
@@ -152,3 +154,4 @@ python3 validate.py "$SKILL_DIR"
 | 先寫 skill.md 再建 ref | 先建 ref（有 RAG），再寫 skill.md 引用 |
 | 忘記跨檔同步（新增 ref 但沒更新 skill.md §Reference 目錄） | 每次新增/刪除 ref 立刻更新 skill.md |
 | 錨點只寫到 item 不寫 chunk | 精確到 `X.Y`，能精確就精確 |
+| Skill 名稱太隨意 | 統一以 `ebook-` 開頭（如 `ebook-ziwei`），一眼區別於工具類 skill |
