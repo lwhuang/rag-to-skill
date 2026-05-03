@@ -9,7 +9,7 @@
 ## 安裝
 
 ```bash
-cp -r rag-to-skill ~/.claude/skills/rag-to-skill
+cp -r rag-to-skill ~/.agents/skills/rag-to-skill
 ```
 
 安裝後，在 Claude Code 中輸入 `/rag-to-skill` 即可觸發。
@@ -65,7 +65,7 @@ cp -r rag-to-skill ~/.claude/skills/rag-to-skill
 ```bash
 python3 << 'EXTRACT'
 import re, os, sys
-path = os.path.expanduser('~/.claude/skills/rag-to-skill/references/06-validation-scripts.md')
+path = os.path.expanduser('~/.agents/skills/rag-to-skill/references/06-validation-scripts.md')
 content = open(path, encoding='utf-8').read()
 m = re.search(r'```python\n(.*?)```', content, re.DOTALL)
 if not m:
@@ -198,7 +198,7 @@ python3 epub_to_jsonl.py 紫微攻略.epub --chunk-size 800
 `pdf_ocr_to_jsonl.py` 需要另外呼叫 Anthropic API（有費用）。若想用 **Claude Code CLI 本身的視覺能力** 做 OCR（消耗 session token，無額外費用），可安裝 `/pdf-ocr` skill：
 
 ```bash
-cp -r pdf-ocr-skill ~/.claude/skills/pdf-ocr
+cp -r pdf-ocr-skill ~/.agents/skills/pdf-ocr
 ```
 
 安裝後在 Claude Code 輸入：

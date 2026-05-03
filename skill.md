@@ -1,14 +1,14 @@
 ---
 name: rag-to-skill
 description: |
-  從 JSONL（RAG 源文件）建立 Claude Code Skill 的完整工作流程工具。
+  從 JSONL（RAG 源文件）建立 ai Code Skill 的完整工作流程工具。
   涵蓋「從零到 100% 完成度」的七個階段：JSONL 掃描 → 架構規劃 → 骨架生成
   → 內容填充 → RAG 錨點標注 → 驗證稽核 → 最終交付。
   本 skill 完全獨立，不依賴任何特定 repo 的 CI 腳本，可帶到任意專案使用。
   何時觸發：
   - 使用者說「把這個 JSONL/RAG 轉成 skill」
   - 使用者說「幫我從這本書建立一個 skill」
-  - 使用者有 .jsonl 檔案並想建立可分享的 Claude Code skill
+  - 使用者有 .jsonl 檔案並想建立可分享的 ai Code skill
   - 使用者說「建立新的 skill，來源是 XXX」
   - 使用者說「我要把 paidRag 裡面的書做成技能」
   適用對象：skill 開發者、知識庫維護者、想把書/文件轉成可執行 AI 知識的任何人。
@@ -21,7 +21,7 @@ description: |
 # RAG → Skill 建構工具
 
 > 本 skill 是**流程工具**，不是領域知識。
-> 目標：把任何 JSONL 格式的 RAG 源文件，轉換為結構完整、可驗證、可分享的 Claude Code Skill。
+> 目標：把任何 JSONL 格式的 RAG 源文件，轉換為結構完整、可驗證、可分享的 ai Code Skill。
 > 核心承諾：**100% 完成度** — 每個 JSONL entity 都有對應 reference，每個斷言都有 RAG 錨點，無 AI 編造。
 
 ---
@@ -31,19 +31,19 @@ description: |
 本 skill 需要：
 
 1. **JSONL 來源文件**：任何 JSON Lines 格式，每行一個 JSON 物件
-2. **目標輸出目錄**：放置新 skill 的路徑（可是任意 repo 或 `~/.claude/skills/`）
+2. **目標輸出目錄**：放置新 skill 的路徑（可是任意 repo 或 `~/.agents/skills/`）
 3. **基本 CLI 環境**：`python3`、`bash`、`git`（可選）
 
 若無現成 JSONL，先用以下工具轉換，再回來：
 
-| 工具 | 支援格式 | 指令 |
-|---|---|---|
-| `any_to_jsonl.py` | **萬用**（PDF / EPUB / DOCX / PPTX / HTML...） | `python3 any_to_jsonl.py <file>` |
-| `pdf_to_jsonl.py` | PDF（有文字層，TOC 分章） | `python3 pdf_to_jsonl.py <file.pdf>` |
-| `epub_to_jsonl.py` | EPUB（spine 順序 + 標題萃取） | `python3 epub_to_jsonl.py <file.epub>` |
-| `pdf_ocr_to_jsonl.py` | **掃描版 PDF**（無文字層，LLM Vision OCR） | `python3 pdf_ocr_to_jsonl.py <file.pdf>` |
+| 工具                    | 支援格式                                       | 指令                                       |
+| --------------------- | ------------------------------------------ | ---------------------------------------- |
+| `any_to_jsonl.py`     | **萬用**（PDF / EPUB / DOCX / PPTX / HTML...） | `python3 any_to_jsonl.py <file>`         |
+| `pdf_to_jsonl.py`     | PDF（有文字層，TOC 分章）                           | `python3 pdf_to_jsonl.py <file.pdf>`     |
+| `epub_to_jsonl.py`    | EPUB（spine 順序 + 標題萃取）                      | `python3 epub_to_jsonl.py <file.epub>`   |
+| `pdf_ocr_to_jsonl.py` | **掃描版 PDF**（無文字層，LLM Vision OCR）           | `python3 pdf_ocr_to_jsonl.py <file.pdf>` |
 
-腳本位置：`~/.claude/skills/rag-to-skill/`（或同 repo 根目錄）。
+腳本位置：`~/.agents/skills/rag-to-skill/`（或同 repo 根目錄）。
 依賴：`pip install markitdown`（any）、`pip install pymupdf`（pdf/ocr）、`pip install anthropic`（ocr）、`pip install ebooklib beautifulsoup4`（epub）。
 OCR 額外需要：`export ANTHROPIC_API_KEY=sk-ant-...`；先執行 `--dry-run` 估算費用。
 
@@ -63,30 +63,30 @@ OCR 額外需要：`export ANTHROPIC_API_KEY=sk-ant-...`；先執行 `--dry-run`
 └──────────┘   └──────────┘   └──────────┘
 ```
 
-| 階段 | 輸入 | 產出 | 完成條件 |
-|---|---|---|---|
-| 1. SCAN | JSONL 路徑 | schema 報告、entity 清單、章節樹 | 知道有幾個 item、schema 欄位、主要章節 |
-| 2. PLAN | entity 清單 | reference 檔分組方案、skill.md 大綱 | 每個 entity 都有歸屬 ref 檔 |
-| 3. SCAFFOLD | 分組方案 | 空的 skill.md + references/ 目錄 + 空 ref 檔 | 目錄結構存在，frontmatter 完整 |
-| 4. BUILD | JSONL + ref 空檔 | 每個 ref 檔填滿 RAG 原文（忠實，不縮寫） | 所有 entity 都有完整內容 |
-| 5. ANCHOR | 填完的 ref 檔 | 每個斷言都有 `> 來源:...` 標注 | 錨點密度 ≥15/1000 行 |
-| 6. AUDIT | 完整 skill | 驗證報告、無 AI 編造確認 | validate.py 全綠 |
-| 7. SHIP | 驗證通過的 skill | 安裝到 `~/.claude/skills/` 或提交 PR | skill 可被觸發使用 |
+| 階段          | 輸入             | 產出                                     | 完成條件                      |
+| ----------- | -------------- | -------------------------------------- | ------------------------- |
+| 1. SCAN     | JSONL 路徑       | schema 報告、entity 清單、章節樹                | 知道有幾個 item、schema 欄位、主要章節 |
+| 2. PLAN     | entity 清單      | reference 檔分組方案、skill.md 大綱            | 每個 entity 都有歸屬 ref 檔      |
+| 3. SCAFFOLD | 分組方案           | 空的 skill.md + references/ 目錄 + 空 ref 檔 | 目錄結構存在，frontmatter 完整     |
+| 4. BUILD    | JSONL + ref 空檔 | 每個 ref 檔填滿 RAG 原文（忠實，不縮寫）              | 所有 entity 都有完整內容          |
+| 5. ANCHOR   | 填完的 ref 檔      | 每個斷言都有 `> 來源:...` 標注                   | 錨點密度 ≥15/1000 行           |
+| 6. AUDIT    | 完整 skill       | 驗證報告、無 AI 編造確認                         | validate.py 全綠            |
+| 7. SHIP     | 驗證通過的 skill    | 安裝到 `~/.claude/skills/` 或提交 PR         | skill 可被觸發使用              |
 
 ---
 
 ## 三、Reference 目錄
 
-| 檔案 | 內容 | 何時讀 |
-|---|---|---|
-| `references/01-quickstart.md` | 5 分鐘快速啟動：完整指令序列，最簡情境 | 已熟悉流程，想快速開始 |
-| `references/02-jsonl-scan.md` | 階段 1：JSONL 結構探索、schema 發現、entity 清單生成 | 拿到 JSONL 的第一件事 |
-| `references/03-skill-scaffold.md` | 階段 2-3：架構規劃 + skill 目錄骨架生成（含 skill.md 模板） | 開始建立 skill 目錄結構時 |
-| `references/04-content-build.md` | 階段 4：從 JSONL 提取原文 → 寫入 ref 檔（含忠實原則） | 填充 reference 內容時 |
-| `references/05-anchor-protocol.md` | 階段 5：RAG 錨點格式規範、寫法範例、常見錯誤 | 在 ref 檔中加入來源標注時 |
-| `references/06-validation-scripts.md` | 階段 6：validate.py 獨立腳本（可複製到任何 repo），驗證邏輯 | 執行品質驗證前 |
-| `references/07-completion-checklist.md` | 100% 完成度判準（Severe/Medium/Light）+ 交付前 checklist | 準備提交或分享 skill 前 |
-| `references/08-case-example.md` | 完整案例：ziwei 專案 紫微攻略.jsonl → skill 實戰走查 | 第一次用本 skill、想看完整案例 |
+| 檔案                                      | 內容                                             | 何時讀                |
+| --------------------------------------- | ---------------------------------------------- | ------------------ |
+| `references/01-quickstart.md`           | 5 分鐘快速啟動：完整指令序列，最簡情境                           | 已熟悉流程，想快速開始        |
+| `references/02-jsonl-scan.md`           | 階段 1：JSONL 結構探索、schema 發現、entity 清單生成          | 拿到 JSONL 的第一件事     |
+| `references/03-skill-scaffold.md`       | 階段 2-3：架構規劃 + skill 目錄骨架生成（含 skill.md 模板）      | 開始建立 skill 目錄結構時   |
+| `references/04-content-build.md`        | 階段 4：從 JSONL 提取原文 → 寫入 ref 檔（含忠實原則）            | 填充 reference 內容時   |
+| `references/05-anchor-protocol.md`      | 階段 5：RAG 錨點格式規範、寫法範例、常見錯誤                      | 在 ref 檔中加入來源標注時    |
+| `references/06-validation-scripts.md`   | 階段 6：validate.py 獨立腳本（可複製到任何 repo），驗證邏輯        | 執行品質驗證前            |
+| `references/07-completion-checklist.md` | 100% 完成度判準（Severe/Medium/Light）+ 交付前 checklist | 準備提交或分享 skill 前    |
+| `references/08-case-example.md`         | 完整案例：ziwei 專案 紫微攻略.jsonl → skill 實戰走查          | 第一次用本 skill、想看完整案例 |
 
 ---
 

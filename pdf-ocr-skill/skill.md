@@ -55,7 +55,7 @@ description: |
 執行 extract_pages.py 把 PDF 轉成 PNG 圖片：
 
 ```bash
-python3 ~/.claude/skills/pdf-ocr/extract_pages.py \
+python3 ~/.agents/skills/pdf-ocr/extract_pages.py \
   "<PDF_PATH>" \
   "<PNG_DIR>" \
   --dpi <DPI>

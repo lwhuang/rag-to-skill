@@ -9,17 +9,17 @@
 ```bash
 # 萬用（推薦，任何格式）
 pip install markitdown
-python3 ~/.claude/skills/rag-to-skill/any_to_jsonl.py <你的檔案>
+python3 ~/.agents/skills/rag-to-skill/any_to_jsonl.py <你的檔案>
 
 # PDF 專用（有文字層，TOC 分章 + header/footer 過濾）
 pip install pymupdf
-python3 ~/.claude/skills/rag-to-skill/pdf_to_jsonl.py <你的.pdf>
+python3 ~/.agents/skills/rag-to-skill/pdf_to_jsonl.py <你的.pdf>
 
 # 掃描版 PDF（無文字層／圖像 PDF）— 使用 LLM Vision OCR
 pip install pymupdf anthropic
 export ANTHROPIC_API_KEY=sk-ant-...
-python3 ~/.claude/skills/rag-to-skill/pdf_ocr_to_jsonl.py <你的.pdf> --dry-run  # 先估費用
-python3 ~/.claude/skills/rag-to-skill/pdf_ocr_to_jsonl.py <你的.pdf>             # 正式執行
+python3 ~/.agents/skills/rag-to-skill/pdf_ocr_to_jsonl.py <你的.pdf> --dry-run  # 先估費用
+python3 ~/.agents/skills/rag-to-skill/pdf_ocr_to_jsonl.py <你的.pdf>             # 正式執行
 
 # EPUB 專用（spine 順序，章節標題更準確）
 pip install ebooklib beautifulsoup4
@@ -105,12 +105,12 @@ EOF
 
 Schema 報告完成後，記下以下四個問題的答案：
 
-| 問題 | 範例答案（ziwei 格式） | 你的答案 |
-|---|---|---|
-| item_index 欄位叫什麼？ | `loc.item_index` | ___ |
-| chunk_index 欄位叫什麼？ | `loc.chunk_index` | ___ |
-| 章節名稱欄位叫什麼？ | `chapter` | ___ |
-| 文字內容欄位叫什麼？ | `text` | ___ |
+| 問題                 | 範例答案（ziwei 格式）    | 你的答案 |
+| ------------------ | ----------------- | ---- |
+| item_index 欄位叫什麼？  | `loc.item_index`  | ___  |
+| chunk_index 欄位叫什麼？ | `loc.chunk_index` | ___  |
+| 章節名稱欄位叫什麼？         | `chapter`         | ___  |
+| 文字內容欄位叫什麼？         | `text`            | ___  |
 
 記下這四個答案，後面 Step 4 提取原文時會用到。
 
@@ -189,12 +189,12 @@ EOF
 
 完成 1.1-1.4 後，填寫此表格（手動或讓 Claude 填）：
 
-| item_index | 章節 / 主題名稱 | 字數 | 預計 ref 檔歸屬 | 備註 |
-|---|---|---|---|---|
-| 1 | 序章 | 800 | (不需 ref) | 前言 |
-| 2 | 第一章：... | 3200 | 01-chapter1.md | |
-| ... | ... | ... | ... | |
-| **孤兒** | 找不到章節的 item | — | **待決定** | Severe 風險 |
+| item_index | 章節 / 主題名稱   | 字數   | 預計 ref 檔歸屬     | 備註        |
+| ---------- | ----------- | ---- | -------------- | --------- |
+| 1          | 序章          | 800  | (不需 ref)       | 前言        |
+| 2          | 第一章：...     | 3200 | 01-chapter1.md |           |
+| ...        | ...         | ...  | ...            |           |
+| **孤兒**     | 找不到章節的 item | —    | **待決定**        | Severe 風險 |
 
 這張表格就是整個 Build 流程的路線圖。
 

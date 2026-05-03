@@ -127,7 +127,7 @@ EOF
 # 提取 validate.py（從 06-validation-scripts.md 一鍵取出）
 python3 << 'EXTRACT'
 import re, os, sys
-path = os.path.expanduser('~/.claude/skills/rag-to-skill/references/06-validation-scripts.md')
+path = os.path.expanduser('~/.agents/skills/rag-to-skill/references/06-validation-scripts.md')
 content = open(path, encoding='utf-8').read()
 m = re.search(r'```python\n(.*?)```', content, re.DOTALL)
 if not m:
