@@ -45,7 +45,7 @@
 BOOK_TITLE="<書名>"
 BOOK_AUTHOR="<作者>"
 SKILL_NAME="ebook-<skill-name>" # 強制要求：必須以 ebook- 開頭，以區分電子書與工具
-SKILL_DIR="$HOME/.agents/skills/$SKILL_NAME"
+SKILL_DIR="${USERPROFILE:-$HOME}/.agents/skills/$SKILL_NAME"
 
 # 建立目錄
 mkdir -p "$SKILL_DIR/references"

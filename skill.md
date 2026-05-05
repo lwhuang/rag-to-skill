@@ -31,7 +31,7 @@ description: |
 本 skill 需要：
 
 1. **JSONL 來源文件**：任何 JSON Lines 格式，每行一個 JSON 物件
-2. **目標輸出目錄**：放置新 skill 的路徑（預設為 `~/.agents/skills/`，亦可是任意 repo）
+2. **目標輸出目錄**：新 skill 的放置路徑（預設建議為 `$HOME/.agents/skills/` 或 Windows 下的 `%USERPROFILE%\.agents\skills\`）
 3. **基本 CLI 環境**：`python3`、`bash`、`git`（可選）
 
 若無現成 JSONL，先用以下工具轉換，再回來：
