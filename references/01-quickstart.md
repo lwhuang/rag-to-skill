@@ -146,16 +146,16 @@ python3 validate.py "$SKILL_DIR"
 
 ### Step 6：清理環境 (SHIP)
 
-完成安裝後，請務必清理工作目錄下的暫存檔：
+完成安裝後，請務必清理工作目錄下的暫存檔。請根據你的作業系統執行對應指令：
 
 ```powershell
-# Windows PowerShell
-Get-ChildItem -Path . -Include *.jsonl, build_*.py, scan_*.py, scan_result.txt -File | Remove-Item -Force
+# Windows (PowerShell) - 強健版本
+Remove-Item -Path *.jsonl, build_*.py, scan_*.py, scan_*_result.txt -Force -ErrorAction SilentlyContinue
 ```
 
 ```bash
-# Linux / macOS
-rm *.jsonl build_*.py scan_*.py scan_result.txt
+# Linux / macOS (Bash) - 強健版本
+rm -f *.jsonl build_*.py scan_*.py scan_*_result.txt
 ```
 
 
