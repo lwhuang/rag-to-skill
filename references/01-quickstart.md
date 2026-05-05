@@ -144,6 +144,21 @@ python3 validate.py "$SKILL_DIR"
 
 全綠 → 進 references/07-completion-checklist.md 確認後安裝。
 
+### Step 6：清理環境 (SHIP)
+
+完成安裝後，請務必清理工作目錄下的暫存檔：
+
+```powershell
+# Windows PowerShell
+Get-ChildItem -Path . -Include *.jsonl, build_*.py, scan_*.py, scan_result.txt -File | Remove-Item -Force
+```
+
+```bash
+# Linux / macOS
+rm *.jsonl build_*.py scan_*.py scan_result.txt
+```
+
+
 ---
 
 ## 常見陷阱（一行版）

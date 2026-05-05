@@ -71,7 +71,7 @@ OCR 額外需要：`export ANTHROPIC_API_KEY=sk-ant-...`；先執行 `--dry-run`
 | 4. BUILD    | JSONL + ref 空檔 | 每個 ref 檔填滿 RAG 原文（忠實，不縮寫）              | 所有 entity 都有完整內容          |
 | 5. ANCHOR   | 填完的 ref 檔      | 每個斷言都有 `> 來源:...` 標注                   | 錨點密度 ≥15/1000 行           |
 | 6. AUDIT    | 完整 skill       | 驗證報告、無 AI 編造確認                         | validate.py 全綠            |
-| 7. SHIP     | 驗證通過的 skill    | 安裝到 `~/.claude/skills/` 或提交 PR         | skill 可被觸發使用              |
+| 7. SHIP     | 驗證通過的 skill    | 安裝到目錄、工作目錄清理報告             | skill 可被觸發使用，且所有暫存檔（.jsonl, build_*.py, scan_*.py）已清空 |
 
 ---
 
