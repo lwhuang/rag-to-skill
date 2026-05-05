@@ -1,15 +1,3 @@
-# 階段 6：獨立驗證腳本（validate.py）
-
-> 本檔包含一個完整的 Python 驗證腳本，可複製到**任何 repo** 使用。
-> 不依賴 ziwei 的 CI 腳本。只需 `python3`。
-
----
-
-## 完整 validate.py 腳本
-
-`validate.py` 已經預裝在 `rag-to-skill` 的根目錄下。你也可以將以下內容存為 `validate.py` 複製到其他環境使用：
-
-```python
 #!/usr/bin/env python3
 """
 rag-to-skill Validator
@@ -19,6 +7,10 @@ rag-to-skill Validator
 """
 
 import sys, os, re, json, glob
+
+# Ensure output is UTF-8
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
 
 VERSION = "1.2"
 ANCHOR_DENSITY_THRESHOLD = 15.0   # per 1000 lines
@@ -215,12 +207,12 @@ def main():
     print("--- [2/5] 空骨架檢查 ---")
     issues = check_ref_not_empty(files)
     all_issues.extend(issues)
-    print(f"  {'✓' if not issues else f'✗ {len(issues)} 個問題'}")
+    print(f"  {'PASS' if not issues else f'FAIL {len(issues)} issues'}")
 
     print("--- [3/5] 內部連結 ---")
     issues = check_internal_links(skill_dir, files)
     all_issues.extend(issues)
-    print(f"  {'✓' if not issues else f'✗ {len(issues)} 個問題'}")
+    print(f"  {'PASS' if not issues else f'FAIL {len(issues)} issues'}")
 
     print("--- [4/5] RAG 錨點密度 ---")
     issues = check_anchor_density(files, jsonl_provided=jsonl_path is not None)
@@ -245,9 +237,9 @@ def main():
 
     print(f"\n{'='*60}")
     if not severe and not medium:
-        print(" ✓ PASS — 所有關鍵檢查通過")
+        print(" PASS — 所有關鍵檢查通過")
     else:
-        print(f" ✗ FAIL — {len(severe)} Severe, {len(medium)} Medium, {len(warning)} Warning")
+        print(f" FAIL — {len(severe)} Severe, {len(medium)} Medium, {len(warning)} Warning")
 
     if severe:
         print("\nSEVERE（必須修復）:")
@@ -266,71 +258,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
-
----
-
-### 執行驗證
-
-我們強烈建議直接使用 `rag-to-skill` 根目錄下的標準工具：
-
-```bash
-# Windows
-python "C:\Users\User\.agents\skills\rag-to-skill\validate.py" path/to/my-skill/
-
-# Linux / macOS
-python3 ~/.agents/skills/rag-to-skill/validate.py path/to/my-skill/
-```
-
-你也可以參考以下步驟，從本檔提取一份複本到當前目錄：
-
-```bash
-python3 << 'EXTRACT'
-import re, os, sys
-path = os.path.expanduser('~/.agents/skills/rag-to-skill/references/06-validation-scripts.md')
-content = open(path, encoding='utf-8').read()
-m = re.search(r'```python\n(.*?)```', content, re.DOTALL)
-if not m:
-    sys.exit('ERROR: 無法找到 python code block，請確認 06-validation-scripts.md 格式正確')
-open('validate.py', 'w', encoding='utf-8').write(m.group(1))
-print(f'validate.py 已提取到當前目錄（{len(m.group(1).splitlines())} 行）')
-EXTRACT
-```
-
-### 執行驗證
-
-```bash
-# 基本驗證（不需要 JSONL）
-python3 validate.py path/to/my-skill/
-
-# 含 JSONL 覆蓋率驗證（完整驗證）
-python3 validate.py path/to/my-skill/ path/to/source.jsonl
-
-# 範例（ziwei 格式）
-python3 validate.py ~/.claude/skills/紫微攻略/ ~/Developer/repos/ziwei/RAG/紫微攻略.jsonl
-```
-
----
-
-## 輸出解讀
-
-| 輸出 | 意義 | 行動 |
-|---|---|---|
-| `✓ PASS` | 所有關鍵檢查通過 | 可進交付流程 |
-| `SEVERE` | 必須修復才能交付 | 對照 07-completion-checklist.md |
-| `MEDIUM` | 建議修復，不擋交付 | 評估修復成本 |
-| `WARNING` | 注意事項，不計 fail | 可選擇性處理 |
-
----
-
-## 腳本限制（已知）
-
-| 限制 | 說明 |
-|---|---|
-| 不做語意稽核 | 無法判斷「content 是否忠實原書」，只驗證結構 |
-| JSONL schema 假設 | 嘗試多種常見欄位名稱，非標準 schema 需手動調整 |
-| 不驗證錨點的 item_index 是否真實存在於 JSONL | 只查 skill 中的數字是否匹配 JSONL 的 index 列表 |
-
----
-
-**下一步** → validate.py 輸出 `✓ PASS` 後，進 `references/07-completion-checklist.md` 執行交付前 checklist（含手動 S6/S7 稽核）

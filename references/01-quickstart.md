@@ -138,8 +138,8 @@ open('validate.py', 'w', encoding='utf-8').write(m.group(1))
 print(f'validate.py 已提取到當前目錄（{len(m.group(1).splitlines())} 行）')
 EXTRACT
 
-# 執行驗證（$SKILL_DIR 在 Step 3 設定）
-python3 validate.py "$SKILL_DIR"
+# 執行驗證（使用技能目錄下的標準工具）
+python "C:\Users\User\.agents\skills\rag-to-skill\validate.py" "$SKILL_DIR"
 ```
 
 全綠 → 進 references/07-completion-checklist.md 確認後安裝。
