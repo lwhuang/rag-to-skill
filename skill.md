@@ -22,6 +22,7 @@ description: |
 
 > 本 skill 是**流程工具**，不是領域知識。
 > 目標：把任何 JSONL 格式的 RAG 源文件，轉換為結構完整、可驗證、可分享的 ai Code Skill。
+> **來源網址整合規範**：若來源 JSONL 包含貼文或網頁原始網址（例如 `url`、`post_id` 或 `text` 中含有 `（來源網址: ...）`），在建立 references 與標注 RAG 錨點時，**必須**將該網址以超連結格式整合至錨點中，且在產出 Skill 的 `skill.md` 的「來源標註與回覆鐵律」中，亦須強制規範 AI 在回答時應附上該原始網址連結。
 > 核心承諾：**100% 完成度** — 每個 JSONL entity 都有對應 reference，每個斷言都有 RAG 錨點，無 AI 編造。
 
 ---

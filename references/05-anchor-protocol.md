@@ -7,6 +7,16 @@
 
 ## 5.1 標準錨點格式
 
+### 1. 含有來源網址之格式 (優先推薦)
+若 JSONL 來源檔案中包含 URL 欄位（例如 `url`、`post_id` 可組成網址，或 `text` 內容中附有網址如 `（來源網址: ...）`），為了維持高溯源性（Traceability），**必須**將書名與章節名包裝成 Markdown 連結指向該原始網址：
+
+```markdown
+> 來源：[《<書名>》<章節名>](URL)（RAG item_index=<X>.<Y>）
+```
+
+### 2. 無來源網址之格式 (純文字)
+若來源完全沒有任何對應的網址，則使用一般純文字格式：
+
 ```markdown
 > 來源：《<書名>》<章節名>（RAG item_index=<X>.<Y>）
 ```
@@ -15,6 +25,7 @@
 |---|---|---|
 | `《<書名>》` | 書名用書名號，中文全形 | `《紫微攻略》` |
 | `<章節名>` | JSONL 的 `chapter` 欄位，原文不改 | `第三章：宮位派解盤法` |
+| `[《<書名>》<章節名>](URL)` | 將書名及章節名包裝成 Markdown 連結，指向原始 Threads 貼文或來源網頁 | `[《Stella Threads》第 1 章](https://www.threads.net/...)` |
 | `item_index=<X>.<Y>` | X = item_index，Y = chunk_index | `item_index=12.3` |
 
 若 chunk_index 為 0（單 chunk item），可只寫 `item_index=<X>`（省略 `.0`）。
