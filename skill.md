@@ -91,6 +91,7 @@ OCR 額外需要：`export ANTHROPIC_API_KEY=sk-ant-...`；先執行 `--dry-run`
 | `references/06-validation-scripts.md`   | 階段 6：validate.py 獨立腳本（可複製到任何 repo），驗證邏輯        | 執行品質驗證前            |
 | `references/07-completion-checklist.md` | 100% 完成度判準（Severe/Medium/Light）+ 交付前 checklist | 準備提交或分享 skill 前    |
 | `references/08-case-example.md`         | 完整案例：ziwei 專案 紫微攻略.jsonl → skill 實戰走查          | 第一次用本 skill、想看完整案例 |
+| `references/09-chat-log-guidelines.md`  | 聊天紀錄 RAG 技能建置指引：時序分割與 VS Code 雙重定位協定      | 處理聊天紀錄、長文對話或需要高精確跳轉導航時 |
 
 ---
 
