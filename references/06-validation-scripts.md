@@ -53,6 +53,14 @@ def check_frontmatter(skill_md_text):
     for field in ["name:", "description:"]:
         if field not in fm:
             issues.append(f"SEVERE: frontmatter 缺少必填欄位 '{field}'")
+    # 針對 ebook- 開頭技能檢查停用自動調用屬性與提示前綴
+    name_m = re.search(r'name:\s*(ebook-[^\s\n]+)', fm)
+    if name_m:
+        if "disable-model-invocation: true" not in fm:
+            issues.append("SEVERE: frontmatter 缺少 'disable-model-invocation: true' 屬性（以 ebook- 開頭的電子書技能必須設定）")
+        notice = "【本技能已停用模型自動調用，僅在使用者明確指示或手動指定時載入】"
+        if notice not in fm:
+            issues.append(f"SEVERE: frontmatter description 缺少「{notice}」提示前綴")
     # 檢查 description 有沒有觸發條件
     if "何時觸發" not in fm and "trigger" not in fm.lower():
         issues.append("MEDIUM: frontmatter description 建議包含「何時觸發」說明")

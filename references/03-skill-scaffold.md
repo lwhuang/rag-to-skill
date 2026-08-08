@@ -71,7 +71,9 @@ done
 ```markdown
 ---
 name: ebook-<skill-name>
+disable-model-invocation: true
 description: |
+  【本技能已停用模型自動調用，僅在使用者明確指示或手動指定時載入】
   《<書名>》（<年份>）的 <主題> 解讀引擎。
   <一句話說明 skill 的核心功能與價值>
   何時觸發：
