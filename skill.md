@@ -1,6 +1,8 @@
 ---
 name: rag-to-skill
+disable-model-invocation: true
 description: |
+  【本技能已停用模型自動叫用，僅在使用者明確指示或手動指定時載入】
   從 JSONL（RAG 源文件）建立 ai Code Skill 的完整工作流程工具。
   涵蓋「從零到 100% 完成度」的七個階段：JSONL 掃描 → 架構規劃 → 骨架生成
   → 內容填充 → RAG 錨點標注 → 驗證稽核 → 最終交付。
