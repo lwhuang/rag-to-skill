@@ -63,6 +63,7 @@ python3 validate.py <skill-dir> <path/to/source.jsonl>
 - [ ] skill.md description 的「何時觸發」有 3 個以上具體場景
 - [ ] skill.md Reference 目錄與實際 `references/` 目錄一致（無多無少）
 - [ ] 所有 `<佔位符>` 都已替換為真實內容
+- [ ] **暫存檔徹底清理**：確認工作目錄與目標 Skill 目錄中的所有暫存檔案（`__pycache__/`、`*.pyc`、`build_*.py`、`scan_*.py`、`scan_*_result.txt`、中繼 `*.jsonl`）已全數刪除清空。
 - [ ] 搜尋所有 ref 檔中是否含 prompt injection 字串（對應 S7）：
 
 ```bash
