@@ -1,0 +1,4 @@
+﻿.codegraph/
+.worktree/
+__pycache__/
+*.pyc
