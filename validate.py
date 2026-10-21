@@ -45,14 +45,45 @@ def check_frontmatter(skill_md_text):
     for field in ["name:", "description:"]:
         if field not in fm:
             issues.append(f"SEVERE: frontmatter 缺少必填欄位 '{field}'")
-    # 針對 ebook- 開頭技能檢查停用自動調用屬性與提示前綴
+
+    # 驗證 YAML 語法與縮排格式
+    try:
+        import yaml
+        try:
+            yaml.safe_load(fm)
+        except Exception as e:
+            issues.append(f"SEVERE: YAML frontmatter 語法解析失敗: {e}")
+    except ImportError:
+        # 無 pyyaml 時執行內建語法與縮排檢查
+        fm_lines = fm.split('\n')
+        in_block_scalar = False
+        for idx, line in enumerate(fm_lines, start=1):
+            if not line.strip():
+                continue
+            if re.match(r'^description:\s*[^\s|>#]', line):
+                if idx < len(fm_lines):
+                    next_line = fm_lines[idx].strip()
+                    if next_line and not re.match(r'^[a-zA-Z0-9_-]+:', next_line) and not fm_lines[idx].startswith(' '):
+                        issues.append(f"SEVERE: frontmatter 第 {idx+1} 行多行 description 缺少區塊符號「|」且未縮排")
+            if re.match(r'^[a-zA-Z0-9_-]+:\s*[|>]-?\s*$', line):
+                in_block_scalar = True
+                continue
+            if in_block_scalar:
+                if re.match(r'^[a-zA-Z0-9_-]+:', line):
+                    in_block_scalar = False
+                elif not line.startswith(' '):
+                    issues.append(f"SEVERE: frontmatter 第 {idx+1} 行多行區塊內容未縮排")
+            elif not re.match(r'^[a-zA-Z0-9_-]+:', line) and not line.startswith(' '):
+                issues.append(f"SEVERE: frontmatter 第 {idx+1} 行格式異常，預期為 key: value 或需適當縮排")
+    # 針對 ebook- 開頭技能檢查停用自動叫用屬性與提示前綴
     name_m = re.search(r'name:\s*(ebook-[^\s\n]+)', fm)
     if name_m:
         if "disable-model-invocation: true" not in fm:
             issues.append("SEVERE: frontmatter 缺少 'disable-model-invocation: true' 屬性（以 ebook- 開頭的電子書技能必須設定）")
-        notice = "【本技能已停用模型自動調用，僅在使用者明確指示或手動指定時載入】"
-        if notice not in fm:
-            issues.append(f"SEVERE: frontmatter description 缺少「{notice}」提示前綴")
+        notice_new = "【本技能已停用模型自動叫用，僅在使用者明確指示或手動指定時載入】"
+        notice_old = "【本技能已停用模型自動調用，僅在使用者明確指示或手動指定時載入】"
+        if notice_new not in fm and notice_old not in fm:
+            issues.append(f"SEVERE: frontmatter description 缺少「{notice_new}」提示前綴")
     # 檢查 description 有沒有觸發條件
     if "何時觸發" not in fm and "trigger" not in fm.lower():
         issues.append("MEDIUM: frontmatter description 建議包含「何時觸發」說明")

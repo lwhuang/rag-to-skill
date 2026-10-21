@@ -28,7 +28,7 @@ description: |
 > **自動增量檢測規範**：在對任何 Skill 進行開發前，**必須**先檢查目標輸出目錄（如 `~/.agents/skills/<skill-name>` 或 `C:\Users\User\.agents\skills\<skill-name>`）是否已存在 `skill.md` 與 `references/` 目錄。若已存在，請依來源類型進行判定：
 >   1. **線上/頻繁更新來源（如 Threads 貼文、YouTube 影片、部落格網頁等，JSONL 或既有 references 包含線上 URL 連結者）**：**必須自動判定為增量更新情境（情境 B）**。嚴禁執行初始化或覆寫，應自動採用增量追加（Append）方式更新，以保留已有檔案的排版、標題及手動調整內容。
 >   2. **靜態書籍來源（如 PDF、EPUB 等無線上 URL 連結者）**：由於使用者可能想要調整格式或整本重新生成，**必須主動向使用者詢問**要採用「1. 重新生成（情境 A，會覆寫既有檔案）」還是「2. 增量更新（情境 B）」，依使用者的選擇執行，禁止自行決定直接覆寫。
-> **電子書技能停用自動調用規範**：所有以 `ebook-` 開頭的電子書技能，建立時**必須**於 YAML Frontmatter 設定 `disable-model-invocation: true` 屬性，並於 `description` 開頭處標示「`【本技能已停用模型自動調用，僅在使用者明確指示或手動指定時載入】`」，以避免模型自動加載消耗 Context 上下文。
+> **電子書技能停用自動叫用與 YAML 格式規範**：所有以 `ebook-` 開頭的電子書技能，建立時**必須**於 YAML Frontmatter 設定 `disable-model-invocation: true` 屬性，且 `description` 欄位**必須強制使用多行區塊標記 `description: |`**，開頭第一行標示「`【本技能已停用模型自動叫用，僅在使用者明確指示或手動指定時載入】`」，後續各行（何時觸發、適用對象、典型提問）**一律縮排 2 個空格**。嚴禁將文字直接緊接在 `description:` 同一行或在換行時省略縮排，否則會導致 Antigravity 的 YAML 解析器報出 `could not find expected ':'` 語法錯誤。
 > **暫存檔清理規範（做完必清）**：每完成一本書的轉換、驗證並交付至目標目錄後，**必須自動執行暫存檔清理**，嚴禁將暫存檔案殘留在工作目錄或 Skill 目錄中。清理標的包含：
 >   - Python 編譯快取：`__pycache__/`、`*.pyc`
 >   - 建置與分析輔助指令碼：`build_*.py`、`scan_*.py`
